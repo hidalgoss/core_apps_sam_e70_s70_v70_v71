@@ -71,19 +71,15 @@ bool UART1_Write( void *buffer, const size_t size );
 
 bool UART1_Read( void *buffer, const size_t size );
 
-bool UART1_WriteIsBusy( void );
+int UART1_ReadByte( void );
 
-bool UART1_ReadIsBusy( void );
+void UART1_WriteByte( int data );
 
-size_t UART1_WriteCountGet( void );
+bool UART1_TransmitterIsReady( void );
 
-size_t UART1_ReadCountGet( void );
+bool UART1_TransmitComplete( void );
 
-bool UART1_ReadAbort(void);
-
-void UART1_WriteCallbackRegister( UART_CALLBACK callback, uintptr_t context );
-
-void UART1_ReadCallbackRegister( UART_CALLBACK callback, uintptr_t context );
+bool UART1_ReceiverIsReady( void );
 
 
 // DOM-IGNORE-BEGIN

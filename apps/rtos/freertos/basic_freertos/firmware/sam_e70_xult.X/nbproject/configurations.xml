@@ -232,6 +232,7 @@
         <itemPath>../src/config/sam_e70_xult/sam_e70_xult.mhc/HarmonyCore.yml</itemPath>
         <itemPath>../src/config/sam_e70_xult/sam_e70_xult.mhc/project.yml</itemPath>
         <itemPath>../src/config/sam_e70_xult/sam_e70_xult.mhc/settings.yml</itemPath>
+        <itemPath>../src/config/sam_e70_xult/sam_e70_xult.mhc/stdio.yml</itemPath>
         <itemPath>../src/config/sam_e70_xult/sam_e70_xult.mhc/uart1.yml</itemPath>
       </logicalFolder>
       <itemPath>Makefile</itemPath>
