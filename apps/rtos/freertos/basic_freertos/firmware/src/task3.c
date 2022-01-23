@@ -83,9 +83,9 @@ extern SemaphoreHandle_t uartMutexLock;
 // Section: Application Callback Functions
 // *****************************************************************************
 // *****************************************************************************
-void uartReadEventHandler(USART_EVENT event, uintptr_t context )
+void uartReadEventHandler(UART_EVENT event, uintptr_t context )
 {
-    if (event == USART_EVENT_READ_THRESHOLD_REACHED)
+    if (event == UART_EVENT_READ_THRESHOLD_REACHED)
     {
         BaseType_t xHigherPriorityTaskWoken;
 
@@ -150,10 +150,10 @@ void TASK3_Tasks ( void )
     bool status = false;
     TickType_t timeNow;
 
-    USART1_ReadCallbackRegister(uartReadEventHandler, 0);
+/*    USART1_ReadCallbackRegister(uartReadEventHandler, 0);
     USART1_ReadThresholdSet(1);
     USART1_ReadNotificationEnable(true, false);
-
+*/
     dataRxSemaphore = xSemaphoreCreateBinary();
 
     if (dataRxSemaphore != NULL)
@@ -168,11 +168,11 @@ void TASK3_Tasks ( void )
         {
             /* Task3 is running (<-) now */
             xSemaphoreTake(uartMutexLock, portMAX_DELAY);
-            USART1_Write((uint8_t*)"                      Tsk3-P3 <-\r\n", 34);
+            UART1_Write((uint8_t*)"                      Tsk3-P3 <-\r\n", 34);
             xSemaphoreGive(uartMutexLock);
 
             /* Toggle an LED if character received is 'L' or 'l' */
-            while (USART1_Read(&readByte, 1) == true)
+            while (UART1_Read(&readByte, 1) == true)
             {
                 if (readByte == 'L' || readByte == 'l')
                 {
@@ -186,7 +186,7 @@ void TASK3_Tasks ( void )
 
             /* Task3 is exiting (->) now */
             xSemaphoreTake(uartMutexLock, portMAX_DELAY);
-            USART1_Write((uint8_t*)"                      Tsk3-P3 ->\r\n", 34);
+            UART1_Write((uint8_t*)"                      Tsk3-P3 ->\r\n", 34);
             xSemaphoreGive(uartMutexLock);
         }
     }
