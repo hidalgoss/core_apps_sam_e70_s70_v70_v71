@@ -80,6 +80,7 @@ bool UART1_TransmitterIsReady( void );
 bool UART1_TransmitComplete( void );
 
 bool UART1_ReceiverIsReady( void );
+void UART1_ReadCallbackRegister( UART_CALLBACK callback, uintptr_t context );
 
 
 // DOM-IGNORE-BEGIN

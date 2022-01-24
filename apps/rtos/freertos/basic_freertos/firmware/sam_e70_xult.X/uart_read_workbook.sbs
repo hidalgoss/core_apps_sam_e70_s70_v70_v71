@@ -1,0 +1,54 @@
+## SCL Builder Setup File: Do not edit!!
+
+## VERSION: MPLAB X
+## FORMAT:  v2.00.01
+## DEVICE:  ATSAME70Q21B
+
+## PINREGACTIONS
+cyc
+No Repeat
+--
+&
+## ADVPINREGACTIONS
+--
+&
+--
+COND2
+Any
+
+
+
+0
+cyc
+
+--
+&
+## CLOCK
+&
+## STIMULUSFILE
+
+UART1_RHR
+Message
+
+2
+D:\Projects\Klepsydra\core_apps_sam_e70_s70_v70_v71\apps\rtos\freertos\basic_freertos\firmware\src\input.txt
+Pkt
+Yes
+
+--
+&
+## RESPONSEFILE
+&
+## ASYNCH
+Pin
+UART0_RHR
+File Message
+
+
+-1
+--
+&
+## ADVANCEDSCL
+
+1
+&

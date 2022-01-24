@@ -4,6 +4,20 @@ attributes: {id: uart1}
 children:
 - type: Symbols
   children:
+  - type: Integer
+    attributes: {id: BRG_VALUE}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: uart1, value: '81'}
+  - type: Integer
+    attributes: {id: UART_CLOCK_FREQ}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: uart1, value: '150000000'}
   - type: File
     attributes: {id: UART_HEADER1}
     children:
@@ -20,15 +34,6 @@ children:
       children:
       - type: Dynamic
         attributes: {id: uart1, value: 'false'}
-  - type: Comment
-    attributes: {id: UART_NVIC_ENABLE_COMMENT}
-    children:
-    - type: Attributes
-      children:
-      - type: Boolean
-        attributes: {id: visible}
-        children:
-        - {type: Value, value: 'false'}
   - type: KeyValueSet
     attributes: {id: UART_OPERATING_MODE}
     children:
@@ -37,7 +42,7 @@ children:
       - type: Boolean
         attributes: {id: readOnly}
         children:
-        - {type: Value, value: 'true'}
+        - {type: Value, value: 'false'}
     - type: Values
       children:
       - type: Dynamic
@@ -85,20 +90,5 @@ children:
         attributes: {id: visible}
         children:
         - {type: Value, value: 'false'}
-- type: Attachments
-  children:
-  - type: DirectCapability
-    attributes: {id: UART1_UART}
-    children:
-    - type: Attributes
-      children:
-      - type: String
-        attributes: {id: targetComponentID}
-        children:
-        - {type: Value, value: stdio}
-      - type: String
-        attributes: {id: targetAttachmentID}
-        children:
-        - {type: Value, value: UART}
 - type: ElementPosition
-  attributes: {x: '700', y: '20', id: uart1}
+  attributes: {x: '700', y: '18', id: uart1}

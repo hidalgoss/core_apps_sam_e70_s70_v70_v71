@@ -232,7 +232,6 @@
         <itemPath>../src/config/sam_e70_xult/sam_e70_xult.mhc/HarmonyCore.yml</itemPath>
         <itemPath>../src/config/sam_e70_xult/sam_e70_xult.mhc/project.yml</itemPath>
         <itemPath>../src/config/sam_e70_xult/sam_e70_xult.mhc/settings.yml</itemPath>
-        <itemPath>../src/config/sam_e70_xult/sam_e70_xult.mhc/stdio.yml</itemPath>
         <itemPath>../src/config/sam_e70_xult/sam_e70_xult.mhc/uart1.yml</itemPath>
       </logicalFolder>
       <itemPath>Makefile</itemPath>
@@ -343,8 +342,8 @@
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="SAME70_DFP" vendor="Microchip" version="4.5.86"/>
         <pack name="CMSIS" vendor="ARM" version="5.4.0"/>
+        <pack name="SAME70_DFP" vendor="Microchip" version="4.5.86"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>

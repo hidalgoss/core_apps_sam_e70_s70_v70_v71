@@ -61,6 +61,7 @@ void Reset_Handler (void);
 void NonMaskableInt_Handler (void);
 void HardFault_Handler (void);
 void xPortSysTickHandler (void);
+void UART1_InterruptHandler (void);
 void PIOA_InterruptHandler (void);
 
 

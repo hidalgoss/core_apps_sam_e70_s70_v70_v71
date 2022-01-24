@@ -150,9 +150,9 @@ void TASK3_Tasks ( void )
     bool status = false;
     TickType_t timeNow;
 
-/*    USART1_ReadCallbackRegister(uartReadEventHandler, 0);
-    USART1_ReadThresholdSet(1);
-    USART1_ReadNotificationEnable(true, false);
+    UART1_ReadCallbackRegister((UART_CALLBACK)uartReadEventHandler, 0);
+ /*   UART1_ReadThresholdSet(1);
+    UART1_ReadNotificationEnable(true, false);
 */
     dataRxSemaphore = xSemaphoreCreateBinary();
 

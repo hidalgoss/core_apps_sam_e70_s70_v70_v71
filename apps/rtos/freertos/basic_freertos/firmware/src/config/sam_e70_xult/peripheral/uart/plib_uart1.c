@@ -47,6 +47,108 @@
 // Section: UART1 Implementation
 // *****************************************************************************
 // *****************************************************************************
+UART_OBJECT uart1Obj;
+
+static void UART1_ISR_RX_Handler( void )
+{
+    if(uart1Obj.rxBusyStatus == true)
+    {
+        while((UART_SR_RXRDY_Msk == (UART1_REGS->UART_SR& UART_SR_RXRDY_Msk)) && (uart1Obj.rxSize > uart1Obj.rxProcessedSize) )
+        {
+            uart1Obj.rxBuffer[uart1Obj.rxProcessedSize++] = (UART1_REGS->UART_RHR& UART_RHR_RXCHR_Msk);
+        }
+
+        /* Check if the buffer is done */
+        if(uart1Obj.rxProcessedSize >= uart1Obj.rxSize)
+        {
+            uart1Obj.rxBusyStatus = false;
+
+            /* Disable Read, Overrun, Parity and Framing error interrupts */
+            UART1_REGS->UART_IDR = (UART_IDR_RXRDY_Msk | UART_IDR_FRAME_Msk | UART_IDR_PARE_Msk | UART_IDR_OVRE_Msk);
+
+            if(uart1Obj.rxCallback != NULL)
+            {
+                uart1Obj.rxCallback(uart1Obj.rxContext);
+            }
+        }
+    }
+    else
+    {
+        /* Nothing to process */
+        ;
+    }
+}
+
+static void UART1_ISR_TX_Handler( void )
+{
+    if(uart1Obj.txBusyStatus == true)
+    {
+        while((UART_SR_TXRDY_Msk == (UART1_REGS->UART_SR & UART_SR_TXRDY_Msk)) && (uart1Obj.txSize > uart1Obj.txProcessedSize) )
+        {
+            UART1_REGS->UART_THR|= uart1Obj.txBuffer[uart1Obj.txProcessedSize++];
+        }
+
+        /* Check if the buffer is done */
+        if(uart1Obj.txProcessedSize >= uart1Obj.txSize)
+        {
+            uart1Obj.txBusyStatus = false;
+            UART1_REGS->UART_IDR = UART_IDR_TXEMPTY_Msk;
+
+            if(uart1Obj.txCallback != NULL)
+            {
+                uart1Obj.txCallback(uart1Obj.txContext);
+            }
+        }
+    }
+    else
+    {
+        /* Nothing to process */
+        ;
+    }
+}
+
+void UART1_InterruptHandler( void )
+{
+    /* Error status */
+    uint32_t errorStatus = (UART1_REGS->UART_SR & (UART_SR_OVRE_Msk | UART_SR_FRAME_Msk | UART_SR_PARE_Msk));
+
+    if(errorStatus != 0)
+    {
+        /* Client must call UARTx_ErrorGet() function to clear the errors */
+
+        /* Disable Read, Overrun, Parity and Framing error interrupts */
+        UART1_REGS->UART_IDR = (UART_IDR_RXRDY_Msk | UART_IDR_FRAME_Msk | UART_IDR_PARE_Msk | UART_IDR_OVRE_Msk);
+
+        uart1Obj.rxBusyStatus = false;
+
+        /* UART errors are normally associated with the receiver, hence calling
+         * receiver callback */
+        if( uart1Obj.rxCallback != NULL )
+        {
+            uart1Obj.rxCallback(uart1Obj.rxContext);
+        }
+    }
+
+    /* Receiver status */
+    if(UART_SR_RXRDY_Msk == (UART1_REGS->UART_SR & UART_SR_RXRDY_Msk))
+    {
+        UART1_ISR_RX_Handler();
+    }
+
+    /* Transmitter status */
+    if(UART_SR_TXRDY_Msk == (UART1_REGS->UART_SR & UART_SR_TXRDY_Msk))
+    {
+        UART1_ISR_TX_Handler();
+    }
+}
+
+void UART1_ReadCallbackRegister( UART_CALLBACK callback, uintptr_t context )
+{
+    uart1Obj.rxCallback = callback;
+    uart1Obj.rxContext = context;
+}
+
+
 
 static void UART1_ErrorClear( void )
 {
@@ -77,6 +179,9 @@ void UART1_Initialize( void )
 
     /* Configure UART1 Baud Rate */
     UART1_REGS->UART_BRGR = UART_BRGR_CD(81);
+    
+    
+    UART1_REGS->UART_IER = (UART_IER_RXRDY_Msk | UART_IER_FRAME_Msk | UART_IER_PARE_Msk | UART_IER_OVRE_Msk);
 }
 
 UART_ERROR UART1_ErrorGet( void )
@@ -154,6 +259,7 @@ bool UART1_Read( void *buffer, const size_t size )
                 break;
             }
 
+            UART1_REGS->UART_IER = (UART_IER_RXRDY_Msk | UART_IER_FRAME_Msk | UART_IER_PARE_Msk | UART_IER_OVRE_Msk);
             if(UART_SR_RXRDY_Msk == (UART1_REGS->UART_SR & UART_SR_RXRDY_Msk))
             {
                 *lBuffer++ = (UART1_REGS->UART_RHR& UART_RHR_RXCHR_Msk);
